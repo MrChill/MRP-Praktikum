@@ -1,0 +1,7 @@
+image: /home/seba/MRP.pgm
+resolution: 0.050000
+origin: [-4.383569, -22.452155, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+
