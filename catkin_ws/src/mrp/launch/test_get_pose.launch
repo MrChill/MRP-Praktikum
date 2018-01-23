@@ -1,0 +1,6 @@
+<launch>
+  <param name="/save_dir" value="$(find mrp)/mrp/data/" />  
+  <node name="get_pose_node" pkg="mrp" type="get_pose.py" >
+  </node>
+  <node name="pseudo_publisher_node" type="pseudopublisher.py" pkg="mrp" />
+</launch>
