@@ -1,0 +1,10 @@
+\begin{thebibliography}{}
+
+\bibitem[Quigley et~al., 2009]{quigley2009ros}
+Quigley, M., Conley, K., Gerkey, B., Faust, J., Foote, T., Leibs, J., Wheeler,
+  R., and Ng, A.~Y. (2009).
+\newblock Ros: an open-source robot operating system.
+\newblock In {\em ICRA workshop on open source software}, volume~3, page~5.
+  Kobe.
+
+\end{thebibliography}
