@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="cup_finger">
+  <!--
+  The following macros creates a finger that can grasp a cup.
+  -->
+  <xacro:property name="MASS" value="0.05" />
+  
+  <!-- The DAE file uses millimeters, we have to use meters. -->
+  <xacro:property name="SCALE" value="0.001" />
+  
+  <xacro:macro name="cup_finger" params="side">
+    <link name="cup_finger_${side}_link">
+      <visual>
+        <geometry>
+	  <mesh filename="package://simulation/description/mesh/cup_fingers/finger.dae"
+	        scale="${SCALE} ${SCALE} ${SCALE}"/>
+        </geometry>
+      </visual>
+      <collision>
+         <geometry>
+	  <mesh filename="package://simulation/description/mesh/cup_fingers/finger.dae"
+	        scale="${SCALE} ${SCALE} ${SCALE}"/>
+        </geometry>
+      </collision>
+      <inertial>
+	<!-- Meshlab computes the following center of mass: -->
+	<origin xyz="${24.800217 * SCALE} ${31.584496 * SCALE} 0"/>
+        <mass value="${MASS}"/>
+        <!--
+	Meshlab computes the following inertia matrix:
+	| 22007170.0  2287752.5  -12.239481 |
+	| 2287752.5   6732243.5  9.770145   |
+	| -12.239481  9.770145   18922590.0 |
+	
+	The unit of the individual entries is [kg * m2].
+	Meshlab assumes a mass of 1kg, thus we have to scale
+	the matrix with the actual weight.
+	-->
+	<inertia
+	  ixx="${MASS * 22007170.0}" ixy="${MASS * 2287752.5}" ixz="${MASS * -12.239481}"
+	  iyy="${MASS * 6732243.5}" iyz="${MASS * 9.770145}"
+	  izz="${MASS * 18922590.0}"/>
+      </inertial>
+    </link>
+    <!-- We want to deal with collisions between the finger and other links. -->
+    <gazebo reference="cup_finger_${side}_link">
+      <selfCollide>false</selfCollide>
+      <static>true</static>
+      <material>Gazebo/DarkGrey</material>
+    </gazebo>
+  </xacro:macro>
+</robot>

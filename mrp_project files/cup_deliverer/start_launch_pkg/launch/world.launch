@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Whether limited joint angles should be used. -->
+  <arg name="limited" default="false"/>
+  
+  <!-- Wether the Gazebo GUI should be started. -->
+  <arg name="gui" default="true"/>
+  
+  <!-- Whether we start a simulation or the real robot. -->
+  <arg name="sim" default="true"/>
+  
+  <arg name="robot_ip" default=""/>
+  
+  <group if="$(arg sim)">
+    <!-- Send robot URDF to param server. -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find start_launch_pkg)/urdf/world.urdf.xacro'" />
+    
+    <!-- Start Gazebo simulation. -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" default="worlds/empty.world"/>
+      <arg name="paused" default="false"/>
+      <arg name="gui" value="$(arg gui)"/>
+    </include>
+    
+    <!-- Push robot_description to factory and spawn robot in Gazebo. -->
+    <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.1" respawn="false" output="screen" />
+    
+    <!-- Start controller managers and robot_state_publisher. -->
+    <include file="$(find ur_gazebo)/launch/controller_utils.launch"/>
+
+    <!-- Start arm controller. -->
+    <rosparam file="$(find ur_gazebo)/controller/arm_controller_ur10.yaml" command="load"/>
+    <node name="arm_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller" respawn="false" output="screen"/>
+  </group>
+  
+  <group unless="$(arg sim)">
+    <!-- Start UR10 driver. -->
+    <include file="$(find ur_modern_driver)/launch/ur10_bringup.launch">
+      <arg name="limited" value="$(arg limited)"/>
+      <arg name="robot_ip" value="$(arg robot_ip)"/>
+    </include>
+  </group>
+      
+  <!-- Start MoveIt. -->
+  <include file="$(find ur10_moveit_config)/launch/ur10_moveit_planning_execution.launch">
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="limited" value="$(arg limited)"/>
+  </include>
+  
+  <group if="$(arg sim)">
+    <!-- Start RViz with MoveIt plugin. -->
+    <include file="$(find ur10_moveit_config)/launch/moveit_rviz.launch">
+      <arg name="config" value="true"/>
+    </include>
+  </group>
+</launch>

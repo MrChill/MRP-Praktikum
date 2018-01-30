@@ -1,0 +1,6 @@
+--- name: to_idle
+--- type: joint_based
+--- date: 
+--- reference_frame: 
+ shoulder_pan_joint shoulder_lift_joint elbow_joint wrist_1_joint wrist_2_joint wrist_3_joint
+0.343		-2.236		1.832		-1.157		-1.571		-1.242		idle_pos	0

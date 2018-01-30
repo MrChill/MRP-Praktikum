@@ -1,0 +1,8 @@
+prefix=/home/seba/MRP/MRP-Praktikum/mrp_ws/devel
+
+Name: mrp_action
+Description: Description of mrp_action
+Version: 0.0.0
+Cflags: -I/home/seba/MRP/MRP-Praktikum/mrp_ws/devel/include
+Libs: -L/home/seba/MRP/MRP-Praktikum/mrp_ws/devel/lib 
+Requires: 

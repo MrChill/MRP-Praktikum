@@ -1,0 +1,9 @@
+--- name: cup_traj
+--- type: joint_based
+--- date: 
+--- reference_frame: 
+ shoulder_pan_joint shoulder_lift_joint elbow_joint wrist_1_joint wrist_2_joint wrist_3_joint
+1.5		-0.652		2.194		-3.112		-1.568		-0.06		above_turtle	0
+1.502		-1.659		1.837		-1.749		-1.56		-0.066		wp	0
+0.862		-1.53		1.712		-1.752		-1.561		-0.706		wp	0
+-0.474		-2.267		2.196		-1.499		-1.562		-2.045		above_table	0

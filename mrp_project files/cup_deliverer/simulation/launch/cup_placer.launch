@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+  <!--
+  Starts the cup placer robot.
+  
+  If sim:=true is passed, the robot is simulated in gazebo instead of the real robot.
+  -->
+  <arg name="ns" default="/cup_placer/"/>
+  
+  <!-- Whether the robot should be simulated or started in reality. -->
+  <arg name="sim" default="true"/>
+
+  <group ns="$(arg ns)">
+    <!-- This is a stub that currently does nothing. -->
+  </group>
+</launch>

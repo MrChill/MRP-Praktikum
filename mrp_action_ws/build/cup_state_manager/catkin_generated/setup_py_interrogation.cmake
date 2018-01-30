@@ -1,0 +1,6 @@
+set(cup_state_manager_SETUP_PY_VERSION "1.0.0")
+set(cup_state_manager_SETUP_PY_SCRIPTS "")
+set(cup_state_manager_SETUP_PY_PACKAGES "cup_transport")
+set(cup_state_manager_SETUP_PY_PACKAGE_DIRS "src/cup_transport")
+set(cup_state_manager_SETUP_PY_MODULES "")
+set(cup_state_manager_SETUP_PY_MODULE_DIRS "")

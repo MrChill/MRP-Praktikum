@@ -1,0 +1,23 @@
+# -------------- Goal --------------
+#   No information required.
+---
+
+# ------------ Result --------------
+#   Whether cup was successfully accepted from the user
+#   and placed on the mobile platform or which kind of failure
+#   occurred.
+#   Error codes:
+#     200 Success.
+#     301 Cup not reachable.
+#     302 Mobile platform not reachable.
+#     401 Cup not found.
+#     402 Mobile platform not found.
+#     500 Path planning failed.
+#     600 Unknown.
+
+uint16 result_code
+---
+
+# ---------- Feedback --------------
+#   Live feedback for debug purposes.
+string feedback

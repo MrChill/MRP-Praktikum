@@ -1,0 +1,45 @@
+<launch>
+  <arg name="sim_world" default="$(env TURTLEBOT_GAZEBO_WORLD_FILE)"/>
+  <arg name="sim_map" default="$(env TURTLEBOT_GAZEBO_MAP_FILE)"/>
+  <param name="/use_sim_time" value="true" />
+  <param name="/save_dir" value="$(find mrp)/mrp/data/" />
+
+  <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
+     <arg name="world_file" value="$(arg sim_world)" />
+  </include>
+
+  <include file="$(find turtlebot_gazebo)/launch/amcl_demo.launch">
+     <arg name="map_file" value="$(arg sim_map)"/>
+  </include>
+  
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory
+              $(find mrp)/mrp/configuration
+          -configuration_basename turtlebot_gmapping.lua"
+      output="screen">
+    <remap from="scan" to="/laser_scan" />
+  </node>
+
+  <node name="flat_world_imu_node" pkg="cartographer_turtlebot"
+      type="cartographer_flat_world_imu_node" output="screen">
+    <remap from="imu_in" to="/mobile_base/sensors/imu_data_raw" />
+    <remap from="imu_out" to="/imu" />
+  </node>
+
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+
+  
+  <node name="dliver_coffee_node" type="deliver.py" pkg="mrp" />
+
+  <node name="pseudo_publisher_node" type="pseudopublisher.py" pkg="mrp" />
+
+  <node name="rviz" pkg="rviz" type="rviz" required="true"
+      args="-d $(find cartographer_turtlebot
+          )/configuration_files/demo_turtlebot.rviz" />
+
+  
+  
+</launch>

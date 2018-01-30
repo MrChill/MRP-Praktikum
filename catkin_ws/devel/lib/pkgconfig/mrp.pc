@@ -1,8 +1,8 @@
-prefix=/home/ros/workspace/MRP/catkin_ws/devel
+prefix=/home/seba/MRP/MRP-Praktikum/catkin_ws/devel
 
 Name: mrp
 Description: Description of mrp
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/ros/workspace/MRP/catkin_ws/devel/lib 
+Libs: -L/home/seba/MRP/MRP-Praktikum/catkin_ws/devel/lib 
 Requires: 

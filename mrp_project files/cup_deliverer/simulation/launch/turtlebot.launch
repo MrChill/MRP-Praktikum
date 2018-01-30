@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+  <!--
+  Starts the turtlebot robot.
+  
+  If sim:=true is passed, the robot is simulated in gazebo instead of the real robot.
+  -->
+  <arg name="ns" default="/turtlebot/"/>
+  
+  <!-- Whether the robot should be simulated or started in reality. -->
+  <arg name="sim" default="true"/>
+  
+  <arg name="x" default="1.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0.0"/>
+  <arg name="roll" default="0"/>
+  <arg name="pitch" default="0"/>
+  <arg name="yaw" default="0"/>
+  
+  <group ns="$(arg ns)">
+    <!-- Send robot urdf to param server. -->
+    <param name="robot_description"
+	   command="$(find xacro)/xacro.py '$(find simulation)/description/urdf/robots/static_turtlebot_scene.urdf.xacro'"/>
+    
+    <node if="$(arg sim)"
+          name="spawn_urdf"
+	  pkg="gazebo_ros"
+	  type="spawn_model"
+	  args="-param robot_description -urdf -model turtlebot -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+  </group>
+</launch>

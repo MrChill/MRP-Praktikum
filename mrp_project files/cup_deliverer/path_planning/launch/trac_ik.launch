@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="chain_start" default="base_link" />
+  <arg name="chain_end" default="tool0" />
+  <arg name="trac_ik_timeout" default="0.005" />
+  <arg name="urdf_param" default="/robot_description"/>
+
+  <node name="fzi_trac_ik" pkg="fzi_trac_ik" type="FZITracIKNode" output="screen">
+    <param name="urdf_param" value="$(arg urdf_param)"/>
+    <param name="chain_start" value="$(arg chain_start)" />
+    <param name="chain_end" value="$(arg chain_end)" />
+    <param name="timeout" value="$(arg trac_ik_timeout)" />   <!-- for no config change -->
+  </node>
+</launch>
+

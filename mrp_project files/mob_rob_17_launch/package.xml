@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>mob_rob_17_launch</name>
+  <version>1.0.0</version>
+  <description>Launch files for the mobile robotics internship 2017.</description>
+
+  <maintainer email="mobrob@listserv.fzi.de">robprak</maintainer>
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <!-- TODO: add the packages of the acceptor and navigator groups
+  <exec_depend>cup_acceptor</exec_depend>
+  <exec_depend>cup_navigator</exec_depend>-->
+  <exec_depend>cup_deliverer</exec_depend>
+  
+  <exec_depend>gazebo_ros</exec_depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

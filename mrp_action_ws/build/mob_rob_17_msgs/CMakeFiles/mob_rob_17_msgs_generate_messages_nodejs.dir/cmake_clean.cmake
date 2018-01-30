@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/mob_rob_17_msgs_generate_messages_nodejs"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/TransportCupGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/MotionExecutorResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/MotionExecutorAction.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/TransportCupAction.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/AcceptCupResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/TransportCupActionGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/AcceptCupFeedback.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/NavigateCupFeedback.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/NavigateCupResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/TransportCupFeedback.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/DeliverCupResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/NavigateCupGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/NavigateCupActionResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/DeliverCupActionFeedback.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/AcceptCupGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/NavigateCupAction.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/TransportCupActionFeedback.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/DeliverCupActionResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/DeliverCupGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/AcceptCupAction.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/TransportCupActionResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/DeliverCupActionGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/NavigateCupActionGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/AcceptCupActionFeedback.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/AcceptCupActionResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/MotionExecutorActionFeedback.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/MotionExecutorGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/MotionExecutorActionResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/TransportCupResult.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/AcceptCupActionGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/DeliverCupFeedback.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/MotionExecutorActionGoal.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/MotionExecutorFeedback.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/DeliverCupAction.js"
+  "/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/share/gennodejs/ros/mob_rob_17_msgs/msg/NavigateCupActionFeedback.js"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang )
+  include(CMakeFiles/mob_rob_17_msgs_generate_messages_nodejs.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

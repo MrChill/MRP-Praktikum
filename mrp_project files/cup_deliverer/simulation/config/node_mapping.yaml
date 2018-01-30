@@ -1,0 +1,3 @@
+ # This file maps your CANOPEN-IDs to the joint names used in the URDF
+# Syntax: node_mapping_<CANOPEN-ID>: <URDF-NAME>
+node_mapping_1: pg70_jaw_b_joint

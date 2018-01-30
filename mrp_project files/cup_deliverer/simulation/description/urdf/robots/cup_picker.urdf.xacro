@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<robot name="cup_picker" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Common stuff -->
+  <xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro" />
+  
+  <!-- Global constants and world link -->
+  <xacro:include filename="$(find simulation)/description/urdf/common.urdf.xacro" />
+
+  <!-- UR 5 -->
+  <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
+  
+  <!-- PG 70 -->
+  <xacro:include filename="$(find simulation)/description/urdf/grippers/pg70/pg70.urdf.xacro"/>
+  
+  <!-- Macro for cuboids -->
+  <xacro:include filename="$(find simulation)/description/urdf/objects/cuboid.urdf.xacro"/>
+  
+  <!-- Macro for cup fingers. -->
+  <xacro:include filename="$(find simulation)/description/urdf/objects/finger.urdf.xacro"/>
+  
+  <!-- Kinect sensor -->
+  <xacro:include filename="$(find turtlebot_description)/urdf/sensors/kinect.urdf.xacro"/>
+
+  <!-- Create a cuboid lab table and connect it to the world. -->
+  <xacro:obj_cuboid name="lab_table" mass="50.0" width="${LAB_TABLE_WIDTH}" height="${LAB_TABLE_HEIGHT}" depth="${LAB_TABLE_DEPTH}">
+    <origin xyz="${0.5 * LAB_TABLE_DEPTH} ${0.5 * LAB_TABLE_WIDTH} ${-0.5 * LAB_TABLE_HEIGHT}" rpy="0 0 0" />
+  </xacro:obj_cuboid>
+  <joint name="${WORLD}_to_lab_table_joint" type="fixed">
+    <parent link="${WORLD}" />
+    <child link = "lab_table_link" />
+    <origin xyz="0 0 ${LAB_TABLE_HEIGHT}" rpy="0 0 0" />
+  </joint>
+  
+  <!-- Create UR5 and connect it to the lab table. -->
+  <xacro:ur5_robot prefix="${CUP_PICKER}" joint_limited="false"/>
+  <joint name="lab_table_to_base_link_joint" type="fixed">
+    <parent link="lab_table_link" />
+    <child link = "base_link" />
+    <origin xyz="0.2 0.302 0.0" rpy="0 0 ${-0.5 * M_PI}" />
+  </joint>
+  
+  <!-- Create a Schunk gripper and connect it to the UR10. -->
+  <xacro:schunk_pg70 name="pg70" parent="${CUP_PICKER}ee_link">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:schunk_pg70>
+  
+  <!-- Create the first custom cup finger. -->
+  <xacro:cup_finger side="a"/>
+  <joint name="pg70_jaw_a_to_cup_finger_a_joint" type="fixed">
+    <parent link="pg70_jaw_a" />
+    <child link = "cup_finger_a_link" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <!-- Create the second custom cup finger. -->
+  <xacro:cup_finger side="b"/>
+  <joint name="pg70_jaw_b_to_cup_finger_b_joint" type="fixed">
+    <parent link="pg70_jaw_b" />
+    <child link = "cup_finger_b_link" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  
+  <!-- Create a link representing the midpoint between both fingertips. -->
+  <link name="grasping_center"/>
+  <joint name="${CUP_PICKER}tool0_to_grasping_center_joint" type="fixed">
+    <parent link="${CUP_PICKER}tool0" />
+    <child link = "grasping_center" />
+    <!--
+    Distance(Schunk jaws <-> UR5 TCP) = 8.85cm
+    Distance(Schunk jaws <-> Fingertips) = 6.5cm
+    Fingertips length = 1.5cm
+    -->
+    <origin xyz="0 0 ${0.0885 + 0.065 - 0.5 * 0.015}" rpy="0 0 0" />
+  </joint>
+  
+  <!-- Create a Kinect. -->
+  <link name="camera_rgb_optical_frame_help"/>
+  <joint name="lab_table_link_to_kinect_joint_help" type="fixed">
+    <parent link="lab_table_link" />
+    <child link = "camera_rgb_optical_frame_help" />
+    <origin xyz="0.66 0.77 0.14" rpy="2.50 0 0" />
+  </joint>
+  
+  
+  <link name="camera_rgb_optical_frame"/>
+  <joint name="lab_table_link_to_kinect_joint" type="fixed">
+    <parent link="camera_rgb_optical_frame_help" />
+    <child link = "camera_rgb_optical_frame" />
+    <origin xyz="0 0 0" rpy="0 0 ${M_PI}" />
+  </joint>
+  
+  <!-- Enable collision checking for the base link. -->
+  <gazebo reference="${CUP_PICKER}base_link">
+    <selfCollide>true</selfCollide>
+  </gazebo>
+  
+<!-- Create a link for the calibration_paper -->
+  <link name="calibration_paper"/>
+  <joint name="calibration_paper_joint" type="fixed">
+      <parent link="lab_table_link"/>
+      <child link ="calibration_paper"/>
+      <origin xyz="0.41 0 -0.46" rpy="${-0.5 * M_PI} 0 0" />
+  </joint>
+  
+</robot>

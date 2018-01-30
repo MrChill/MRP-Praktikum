@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="max_vel_scaling_factor" default="0.1"/>
+  <arg name="pathloader_velocity" default="0.1"/>
+  <arg name="pathloader_acceleration" default="0.1" />
+  <!--remap from="/cup_picker/motion_executor_cup_picker/pathloader" to="/cup_picker/pathloader" />
+  <remap from="/cup_picker/motion_executor_cup_picker/pathloader" to="/cup_picker/pathloader" />
+  <remap from="$(arg ns)/motion_executor_cup_picker/motion_interface" to="$(arg ns)/motion_interface" />
+  <remap from="$(arg ns)/motion_executor_cup_picker/$(arg schunk_ns)" to="$(arg ns)/$(arg schunk_ns)" /-->
+
+  <node name="motion_executor_cup_picker" pkg="motion_executor_cup_picker" type="motion_executor_cup_picker" output="screen">
+    <param name="max_vel_scaling_factor" type="double" value="$(arg max_vel_scaling_factor)" />
+    <param name="pathloader_velocity" type="double" value="$(arg pathloader_velocity)" />
+    <param name="pathloader_acceleration" type="double" value="$(arg pathloader_acceleration)" />
+    <param name="gripper_close_value" type="double" value="0.02" />
+    <param name="gripper_open_value" type="double" value="0.0663" /> <!-- 0.0663 maximale wert um zu öffnen...-->
+  </node>
+</launch>
+

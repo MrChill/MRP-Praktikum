@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+  <!--
+  Starts the cup.
+  
+  TODO: cup representation not yet clear, the *sim* parameter does not
+        really make sense yet
+  -->
+  
+  <arg name="ns" default="/cup/"/>
+  
+  <!-- Whether the cup should be simulated or moved in reality. -->
+  <arg name="sim" default="true"/>
+  
+  <group ns="$(arg ns)">
+    <!-- Send cup urdf to param server. -->
+    <param name="cup_description"
+	   command="$(find xacro)/xacro.py '$(find simulation)/description/urdf/objects/cup.urdf.xacro'"/>
+
+    <node if="$(arg sim)"
+	  name="spawn_urdf"
+	  pkg="gazebo_ros"
+	  type="spawn_model"
+	  args="-param cup_description -urdf -model cup"/>
+  </group>
+</launch>

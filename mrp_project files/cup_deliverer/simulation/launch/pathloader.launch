@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- GDB functionality -->
+  <arg name="debug" default="false" />
+  <arg unless="$(arg debug)" name="launch_prefix" value="" />
+  <arg     if="$(arg debug)" name="launch_prefix" value="xterm -e gdb --ex run --args" />
+
+  <arg name="trajectory_folder" default="$(find pathloader)/etc"/>
+
+  <arg name="gripper_control" default="control" />
+  <arg name="controller_namespace" default="/follow_joint_trajectory" />
+  <arg name="motion_interface_action_service" default="motion_interface" />
+  <arg name="command_topic" default="/command" />
+
+  <arg name="endeffector_frame" default="tool0" />
+
+  <arg name="frequency" default="30"/>
+  <arg name="robot_description_from_urdf" default="True"/>
+  <arg name="ik_max_joint_delta" default="10.3"/> <!-- This is for the IK -->
+  
+  <arg name="robot_namespace" default=""/>
+
+  <node name="pathloader" pkg="pathloader" type="pathloader" output="screen" launch-prefix="$(arg launch_prefix)">
+    <remap from="/robot_description" to="$(arg robot_namespace)/robot_description"/>
+    <param name="path_to_trajectory_files" type="string" value="$(arg trajectory_folder)" />
+    <param name="trajectory_sleep_seconds" type="int" value="4" />  <!-- Sleep duration between trajectories when playing multiple in a row -->
+    <param name="hand_reset_sleep_seconds" type="int" value="40" /> <!-- Sleep duration for hand reset routine -->
+    <param name="hand_reset_counter"       type="int" value="10" />  <!-- Call hand reset routine each hand_reset_counter played trajectories -->
+    <param name="ros_control_action_service" type="string" value="$(arg controller_namespace)" />
+    <param name="ros_control_command_topic" type="string" value="$(arg command_topic)" />
+    <param name="robot_description_from_urdf" type="bool" value="$(arg robot_description_from_urdf)" />
+    <param name="ik_max_joint_delta" type="double" value="$(arg ik_max_joint_delta)" />
+    <param name="motion_interface_action_service" type="string" value="$(arg motion_interface_action_service)" />
+    <param name="endeffector_frame" type="string" value="$(arg endeffector_frame)" />
+  </node>
+</launch>

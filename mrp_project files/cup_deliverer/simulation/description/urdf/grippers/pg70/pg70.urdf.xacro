@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Variable definitions -->
+  <xacro:property name="pi" value="3.14159265" />
+  
+  <xacro:include filename="$(find simulation)/description/urdf/grippers/pg70/pg70.gazebo.xacro" />
+  <xacro:include filename="$(find simulation)/description/urdf/grippers/pg70/pg70.transmission.xacro" />
+
+  <!-- Macros definitions -->
+  <xacro:macro name="schunk_pg70" params="name parent *origin">
+
+    <!-- Schunk PG70 plus -->
+    <link name="${name}_base_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="1"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://schunk_canopen_driver/meshes/pg70/pg70.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+	<origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://schunk_canopen_driver/meshes/pg70/pg70.dae"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${name}base_link_joint" type="fixed" >
+      <parent link="${parent}" />
+      <child link="${name}_base_link" />
+      <origin xyz="0 0 0" rpy="0 0 ${-pi/2}" />
+    </joint>
+
+    <!-- Schunk PG70 plus gripper jaws -->
+    <link name="${name}_jaw_b" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="1"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://schunk_canopen_driver/meshes/pg70/pg70_jaw.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+	<origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://schunk_canopen_driver/meshes/pg70/pg70_jaw.dae"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${name}_jaw_b_joint" type="prismatic" >
+      <parent link="${name}_base_link" />
+      <child link="${name}_jaw_b" />
+      <origin xyz="0.0 0.0885 0" rpy="0 0 0" />
+      <limit effort="100" lower="0.0005" upper="0.03275" velocity="2.0"/>
+      <axis xyz="1 0 0" />
+    </joint>
+
+    <link name="${name}_jaw_a" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="1"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://schunk_canopen_driver/meshes/pg70/pg70_jaw.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+	<origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://schunk_canopen_driver/meshes/pg70/pg70_jaw.dae"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="${name}_jaw_a_joint" type="prismatic" >
+      <mimic joint="${name}_jaw_b_joint" multiplier="1" offset="0"/>
+      <parent link="${name}_base_link" />
+      <child link="${name}_jaw_a" />
+      <origin xyz="0 0.0885 0" rpy="0 ${pi} 0 "/>
+      <limit effort="100" lower="0.0005" upper="0.03275" velocity="2.0"/>
+      <axis xyz="1 0 0" />
+    </joint>
+
+    <!-- extensions -->
+    <xacro:schunk_pg70_gazebo name="${name}" />
+    <xacro:schunk_pg70_transmission name="${name}" />
+  
+  </xacro:macro> <!-- end_effector -->
+</robot>
+

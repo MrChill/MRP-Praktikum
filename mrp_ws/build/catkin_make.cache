@@ -1,0 +1,2 @@
+mrp_action
+-DCATKIN_DEVEL_PREFIX=/home/seba/MRP/MRP-Praktikum/mrp_ws/devel -DCMAKE_INSTALL_PREFIX=/home/seba/MRP/MRP-Praktikum/mrp_ws/install -G Unix Makefiles

@@ -1,0 +1,130 @@
+# Installation
+
+1. git clone https://ids-git.fzi.de/robprak3/cup_state_manager
+2. catkin_make
+
+# Struktur
+
+cup_state_manager
+├── CMakeLists.txt
+├── nodes
+│   ├── __init__.py
+│   └── cup_transport_server
+├── package.xml
+├── scripts
+│   ├── start_cup_transport
+│   └── start_dummy_robots
+├── setup.py
+└── src
+   └── cup_transport
+       ├── __init__.py        ├── common.py
+       ├── dummy.py
+       └── server.py
+
+Die wichtigste Datei ist "server.py". Darin befindet sich der zentrale
+ActionServer, der die "TransportCup"-Action anbietet. Diese Action
+fasst die drei Actions "NavigateCup", "AcceptCup" und "DeliverCup"
+zusammen.
+
+In "dummy.py" befinden sich Dummy-Implementierungen der Action-Server
+der einzelnen Gruppen. Da könnt ihr zum einen vllt. etwas für euren
+eigenen Server abschauen, aber vor allem die anderen Gruppen simulieren
+ohne deren fertige Implementierung zu besitzen.
+Das sollte zum Testen sehr nützlich sein.
+
+Die Dateien in den Verzeichnissen "nodes" und "scripts" werden von
+catkin an die richtigen Stellen installiert, damit die folgenden
+Befehle funktionieren.
+
+# Benutzung
+
+1. Starten des zentralen ActionServers "cup_transport_server":
+
+   $ rosrun cup_state_manager cup_transport_server
+
+2. Ausführen der globalen "TransportCup"-Action:
+
+   $ rosrun cup_state_manager start_cup_transport
+
+3. Starten von einem oder mehreren Dummy-Knoten:
+
+   $ rosrun cup_state_manager start_dummy_robots [ROBOT_NAMES]
+
+   wobei ROBOT_NAMES eine durch Leerzeichen getrennte Auflistung der
+   Namen der Roboter ist, für die ihr Dummy-Knoten starten wollt.
+   Mögliche Namen sind (natürlich) cup_navigator, cup_acceptor und
+   cup_deliverer.
+
+# TODO
+
+Ich hatte relativ wenig Zeit, die einzelnen Komponenten zu testen. Ihr
+könnt gerne Verbesserungen committen! Es kann gut sein, dass nicht
+alles auf Anhieb funktioniert.
+
+Im Moment wird in "server.py" in der Methode "execute" nur die
+DeliverCup-Action gestartet und die AcceptCup und NavigateCup Actions
+nicht ausgeführt.
+Das könnt ihr ganz einfach ändern indem ihr die Zeile 
+# self.navigate_to_acceptor()
+wieder einkommentiert.
+
+Außerdem habe ich nur den CupDelivererDummy richtig getestet, die
+anderen Dummies funktionieren evtl. nicht auf Anhieb!
+Es sollten aber wenn dann nur winzige Probleme sein.
+
+Leider bin ich persönlich erst am Dienstag wieder am FZI, dann können
+wir die noch existierenden Probleme auf jeden Fall klären!
+
+
+# Gruppe 3: Action Specification
+
+(Writing this in English, because I believe not all members speak
+German.)
+
+Can you please tell us, which kind of result_codes you have come up
+with for your NavigateCup-action?
+You can see the result_codes of the other two groups here:
+https://ids-git.fzi.de/robprak3/mob_rob_17_msgs/action/
+
+In the last meeting we agreed that you come up with these codes as soon
+as possible!
+Right now, the cup_transport_server assumes that 200 means SUCCESS like
+for the other groups.
+
+
+
+--------
+
+In der aktuellen Version der mob_rob_17_msgs Package ist die TransportCupAction dabei.
+Die CupExecutorAction ist ein Teil der DeliverCupAction.
+
+Hier zur Übersicht nochmal alle Actions:
+
+TransportCupAction # kompletter Transport der Tasse von Tisch A nach Tisch B
+    ├── AcceptCupAction # Entgegennahmen der Tasse vom User durch Gruppe 1
+    ├── DeliverCupAction # Ausliefern der Tasse an User durch Gruppe 3
+    │   └── CupExecutorAction # Motion planning und execution der Gruppe 3
+    └── NavigateCupAction # Navigieren des Turtlebots zwischen A und B
+
+
+
+--------
+
+Hey,
+
+noch ein kurzes Feedback zu eurer Action-Spec.
+Der CupTransportServer sollte nicht entscheiden müssen, ob die Navigation nochmal stattfindet.
+Das solltet ihr in eurem Knoten machen. Ihr könnt diese Entscheidung dann einfach per Feedback an den CupTransportServer
+senden. Am Besten verwendet ihr dafür auch einfach einen String wie die anderen Gruppen, den der CupTransportServer
+dann an seinen Client weiterleitet.
+Eure Action kann entweder erfolgreich sein, oder fehlschlagen. Ob und wann solltet ihr entscheiden und euch einfach für
+den Fall eines Fehlers noch ein paar aussagekräftige Error-Codes überlegen, wie die anderen Gruppen.
+
+Im cup_state_manager Package ist bereits mein Vorschlag für eure Action (die NavigateCupAction),
+die könnt ihr einfach übernehmen.
+Das Action-Goal besitzt einen Boolean-Parameter, der spezifiziert zu welchem Roboter ihr navigieren sollt.
+Dann könnt ihr über einen String Feedback über euren Fortschritt und eventuelle "Retry"-Entscheidungen etc. geben.
+Und über den Result-Code signalisiert ihr dann "Erfolg" oder eine bestimmte Art von Fehler.
+Alles was ihr tun müsst, ist euch ein paar Error-Result-Codes zu überlegen.
+
+Ich hoffe das leuchtet ein! Der NavigateCupDummy implementiert die NavigateCupAction bereits.

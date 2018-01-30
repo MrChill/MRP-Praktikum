@@ -1,0 +1,8 @@
+prefix=/home/seba/MRP/MRP-Praktikum/mrp_action_ws/install
+
+Name: mob_rob_17_launch
+Description: Description of mob_rob_17_launch
+Version: 1.0.0
+Cflags: 
+Libs: -L/home/seba/MRP/MRP-Praktikum/mrp_action_ws/install/lib 
+Requires: 

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="sim" default="true"/>
+  <arg name="limited" default="true"/>
+  <arg name="robot_ip" default="ids-ur10"/>
+
+  <!--environment for gazebo -->
+  <include if="$(arg sim)" file="$(find simulation)/launch/cup_picker.launch">
+    <arg name="limited" value="$(arg limited)"/>
+  </include>
+  <include if="$(arg sim)" file="$(find simulation)/launch/turtlebot.launch"/>
+  <include if="$(arg sim)" file="$(find simulation)/launch/cup.launch"/>
+  
+  <!-- move group for the robot -->
+  <include file="$(find ur10_gripper_moveit_config)/launch/cup_picker_moveit_planning_execution.launch">
+    <arg name="sim" default="$(arg sim)" />
+    <arg name="limited" default="$(arg limited)" />
+    <!--arg name="debug" default="false" /-->
+  </include>
+
+  <!-- rviz interface -->
+  <include file="$(find ur10_gripper_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" default="true"/>
+  </include>
+  
+  <!--include file="$(find ur10_gripper_moveit_config)/launch/demo.launch"/-->
+
+  <node name="move_group_my_trail" pkg="simulation" type="move_group_interface_tutorial" respawn="false" output="screen">
+  </node>
+
+</launch>

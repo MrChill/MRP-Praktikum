@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="schunk_pg70_gazebo" params="name">
+
+    <gazebo reference="${name}_base_link">
+      <gravity>true</gravity>
+      <self_collide>false</self_collide>
+    </gazebo>
+
+    <gazebo reference="{name}_jaw_b">
+      <gravity>true</gravity>
+      <self_collide>false</self_collide>
+    </gazebo>
+
+    <gazebo reference="${name}_jaw_a">
+      <gravity>true</gravity>
+      <self_collide>false</self_collide>
+    </gazebo>
+
+  </xacro:macro>
+  <!--gazebo>
+      <plugin name="ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/pg70</robotNamespace>
+       </plugin>
+  </gazebo-->
+</robot>

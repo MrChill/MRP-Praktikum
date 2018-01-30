@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<root xmlns:xacro="http://ros.org/wiki/xacro">  
+  <xacro:property name="table_height" value="0.8" />
+  <xacro:property name="table_width" value="1.6" />
+  <xacro:property name="table_depth" value="1.2" />
+  <xacro:property name="table_mass" value="100.0" />
+  
+  <xacro:macro name="lab_table" params="parent *origin">
+    <joint name="${parent}_lab_table_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}" />
+      <child link="lab_table_link" />
+    </joint>
+    
+    <link name="lab_table_link">
+      <inertial>
+        <origin xyz="0 0 1" rpy="0 0 0"/>
+        <mass value="${table_mass}"/>
+        <inertia
+          ixx="1.0" ixy="0.0" ixz="0.0"
+          iyy="1.0" iyz="0.0"
+          izz="1.0"/>
+      </inertial>
+      <visual>
+	<geometry>
+	  <box size="${table_depth} ${table_width} ${table_height}" />
+	</geometry>
+      </visual>
+    </link>
+    
+    <gazebo reference="lab_table_link">
+      <material>Gazebo/Blue</material>
+    </gazebo>
+  
+    <!-- enables self collision with the table -->
+    <gazebo reference="${parent}_lab_table_joint">
+      <selfCollide>true</selfCollide>
+      <static>true</static>
+    </gazebo>
+  </xacro:macro>
+</root>

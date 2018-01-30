@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot name="cup_picker_constants" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- PI the circle number. -->
+  <xacro:property name="M_PI" value="3.1415926535897931"/>
+  
+  <!-- Prefix identifying the cup picker robot. -->
+  <xacro:property name="CUP_PICKER" value=""/>
+  
+  <!-- Prefix identifying the turtlebot robot. -->
+  <xacro:property name="TURTLEBOT" value=""/>
+  
+  <!-- Name of the link representing the world of the robot. -->
+  <xacro:property name="WORLD" value="world"/>
+  
+  <!-- The world link (can be replaced by another link if needed). -->
+  <link name="world" />
+  
+  <!-- Width of the lab table. -->
+  <xacro:property name="LAB_TABLE_WIDTH" value="${0.61 + 0.07}"/>
+  
+  <!-- Height of the lab table. -->
+  <xacro:property name="LAB_TABLE_HEIGHT" value="0.96"/>
+  
+  <!-- Depth of the lab table. -->
+  <xacro:property name="LAB_TABLE_DEPTH" value="0.41"/>
+</robot>

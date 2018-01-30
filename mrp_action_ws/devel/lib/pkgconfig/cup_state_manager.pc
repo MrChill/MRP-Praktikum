@@ -1,0 +1,8 @@
+prefix=/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel
+
+Name: cup_state_manager
+Description: Description of cup_state_manager
+Version: 1.0.0
+Cflags: 
+Libs: -L/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel/lib 
+Requires: 

@@ -1,0 +1,12 @@
+# -------------- Goal --------------
+geometry_msgs/Pose goal_pose
+float32 gripper_close_val
+---
+
+# ------------ Result --------------
+bool success
+---
+
+# ---------- Feedback --------------
+#   Live feedback for debug purposes.
+string feedback 

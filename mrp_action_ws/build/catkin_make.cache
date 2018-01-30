@@ -1,0 +1,2 @@
+cup_state_manager:mob_rob_17_launch:mob_rob_17_msgs:mrp
+-DCATKIN_DEVEL_PREFIX=/home/seba/MRP/MRP-Praktikum/mrp_action_ws/devel -DCMAKE_INSTALL_PREFIX=/home/seba/MRP/MRP-Praktikum/mrp_action_ws/install -G Unix Makefiles

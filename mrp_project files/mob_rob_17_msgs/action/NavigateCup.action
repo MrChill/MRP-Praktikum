@@ -1,0 +1,20 @@
+# -------------- Goal --------------
+#   Where to navigate:
+#     True = navigate to cup acceptor (group 1)
+#     False = navigate to cup deliverer (group 3)
+
+bool destination
+---
+
+# ------------ Result --------------
+#   Whether navigation was completed successfully
+#   or failed.
+#   Error codes:
+#     TODO by group 2
+
+uint16 result_code
+---
+
+# ---------- Feedback --------------
+#   Live feedback from the navigation.
+string feedback

@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<launch>
+  <!--
+  Starts the cup picker robot.
+  
+  If sim:=true is passed, the robot is simulated in gazebo instead of the real robot.
+  Note: Gazebo has to be running for this to work. You can start Gazebo with the
+  *gazebo.launch* file.
+  -->
+ 
+  
+  <!-- Prefix identifying the cup picker robot. -->
+  <arg name="prefix" default="cup_picker"/>
+  
+  <!-- Dedicated namespace -->
+  <arg name="ns" default="/$(arg prefix)"/>
+  <arg name="schunk_ns" default="schunk_canopen_driver_ns"/>
+  
+  <!-- Whether the robot should be simulated or started in reality. -->
+  <arg name="sim" default="false"/>
+  
+  <!-- Whether joint angles should be limited to [-pi,pi]. -->
+  <!--<arg name="limited" default="false"/>-->
+  
+  <!-- IP of the robot. -->
+  <arg name="robot_ip" default="ids-ur5" />
+  
+  <!-- Base link of the robot. -->
+  <arg name="chain_start" default="base_link" />
+  
+  <!-- TCP of the robot -->
+  <arg name="chain_end" default="grasping_center" />
+  
+  <!-- Namespace and topic name of the real position based controller. -->
+  <arg name="controller_name" value="position_trajectory_controller"/>
+  <arg name="controller_topic_name" value="follow_joint_trajectory"/>
+  
+  <group ns="$(arg ns)">
+    <!-- Send robot urdf to param server. -->
+    <param name="robot_description"
+	   command="$(find xacro)/xacro --inorder '$(find simulation)/description/urdf/robots/cup_picker.urdf.xacro'"/>
+
+    <!-- If we are simulating, we start Gazebo. -->
+    <group if="$(arg sim)">
+      <!-- Spawn robot in gazebo. -->
+      <node name="spawn_gazebo_model"
+	    pkg="gazebo_ros"
+	    type="spawn_model"
+	    args="-urdf -param robot_description -model cup_picker"
+	    respawn="false"
+	    output="screen"/>
+
+      <!-- Start fake controllers for the simulated hardware in Gazebo. -->
+      <include file="$(find ur_gazebo)/launch/controller_utils.launch"/>
+      <rosparam file="$(find ur_gazebo)/controller/arm_controller_ur5.yaml" command="load"/>
+      <node name="arm_controller_spawner"
+	    pkg="controller_manager"
+	    type="controller_manager"
+	    args="spawn arm_controller"
+	    respawn="false"
+	    output="screen"/>
+    </group>
+    
+    <!-- Inform the Pathloader about "passive" joints it is not responsible for.  -->
+    <param name="robot_description_semantic"
+	   textfile="$(find simulation)/description/urdf/robots/arm_gripper.srdf" />
+    
+    <!-- Publish joint states to /tf. -->
+    <node name="state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+      <param name="use_tf_static" value="false"/>
+    </node>
+     
+    <!-- If we are not simulating, we start the real robot driver and hardware controllers. -->
+    <group unless="$(arg sim)">      
+      <!-- Start the UR5 robot driver. -->
+      <node name="ur_driver" pkg="ur_modern_driver" type="ur_driver" output="screen">
+	<param name="robot_ip_address" value="$(arg robot_ip)" />
+	<remap from="follow_joint_trajectory" to="$(arg controller_name)/$(arg controller_topic_name)"/>
+      </node>
+      
+      <group ns="$(arg schunk_ns)">
+	<!--remap from="/joint_states" to="$(arg ns)/schunk_canopen_driver/joint_states" /-->
+	<!-- Schunk gripper -->
+	<include file="$(find schunk_canopen_driver)/launch/gripper.launch" />
+      </group>
+      
+	<!-- Trac IK Server. -->
+      <include file="$(find motion_launch)/launch/trac_ik.launch">
+	<arg name="urdf_param" value="$(arg ns)/robot_description"/>
+	<arg name="chain_start" value="$(arg chain_start)" />
+	<arg name="chain_end" value="$(arg chain_end)" />
+	<arg name="trac_ik_timeout" value="0.005" />
+      </include>
+      
+      <!-- Motion interface. -->
+      <remap from="joint_trajectory_action" to="$(arg controller_name)/$(arg controller_topic_name)" />
+      <remap from="/joint_states" to="$(arg ns)/joint_states" />
+      <include file="$(find motion_launch)/launch/motion_interface.launch">
+	<arg name="controller_namespace" value="$(arg ns)/$(arg controller_name)"/>
+	<arg name="controller_topic_name" value="$(arg controller_topic_name)"/>
+      </include>
+      
+      <!-- Pathloader. -->
+      <include file="$(find simulation)/launch/pathloader.launch">
+	<arg name="robot_namespace" value="$(arg ns)"/>
+	<arg name="controller_namespace" value="$(arg ns)/$(arg controller_name)/$(arg controller_topic_name)" />
+	<arg name="trajectory_folder" value="$(find simulation)/traj" />
+	<arg name="endeffector_frame" value="$(arg chain_end)" />
+      </include>
+      
+      <!-- OpenNI camera driver. -->
+      <include file="$(find openni_launch)/launch/openni.launch">
+	<arg name="depth_registration" value="true" />
+      </include>
+
+      <!-- Motion executor for Cup Picker-->
+      <include file="$(find motion_executor_cup_picker)/launch/motion_executor_cup_picker.launch"/>
+    </group>
+  </group>
+</launch>

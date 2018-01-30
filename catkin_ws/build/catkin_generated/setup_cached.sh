@@ -7,4 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export PWD="/home/ros/workspace/MRP/catkin_ws/build"
+export PWD="/home/seba/MRP/MRP-Praktikum/catkin_ws/build"

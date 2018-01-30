@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+  <!--
+  Launches all three robots:
+    1. The cup placer.
+    2. The turtlebot.
+    3. The cup picker.
+  
+  If sim:=true is passed, the robots are launched in the Gazebo simulation
+  instead of the real world.
+  -->
+  
+  <arg name="sim" default="true"/>
+  
+  <!-- Start Gazebo if necessary. -->
+  <include if="$(arg sim)" file="$(find simulation)/launch/gazebo.launch"/>
+
+  <!-- Launch the individual robots.  -->
+  <include file="$(find simulation)/launch/cup_placer.launch">
+    <arg name="sim" value="$(arg sim)"/>
+  </include>
+  <include file="$(find simulation)/launch/turtlebot.launch">
+    <arg name="sim" value="$(arg sim)"/>
+  </include>
+  <include file="$(find simulation)/launch/cup_picker.launch">
+    <arg name="sim" value="$(arg sim)"/>
+  </include>
+  <include if="$(arg sim)" file="$(find simulation)/launch/cup.launch"/>
+</launch>
+ 

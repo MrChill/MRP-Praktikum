@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="cuboid">
+  <!--
+  This macro creates a cuboid of a particular mass and dimensions.
+  The origin block parameter allows to shift/rotate the reference frame
+  of the cuboid from the center to another destination.
+  -->
+  <xacro:macro name="obj_cuboid" params="name mass width height depth *origin">
+    <link name="${name}_link">
+      <visual>
+        <geometry>
+	  <box size="${depth} ${width} ${height}" />
+        </geometry>
+	<xacro:insert_block name="origin"/>
+      </visual>
+      <collision>
+         <geometry>
+          <box size="${depth} ${width} ${height}" />
+         </geometry>
+	 <xacro:insert_block name="origin"/>
+      </collision>
+      <inertial>
+	<xacro:insert_block name="origin"/>
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass/12.0*(height*height + width*width)}" ixy="0.0" ixz="0.0"
+          iyy="${mass/12.0*(height*height + depth*depth)}" iyz="0.0"
+          izz="${mass/12.0*(width*width + depth*depth)}"/>
+      </inertial>
+    </link>
+    <gazebo reference="${name}_link">
+      <selfCollide>true</selfCollide>
+    </gazebo>
+  </xacro:macro>
+</robot>

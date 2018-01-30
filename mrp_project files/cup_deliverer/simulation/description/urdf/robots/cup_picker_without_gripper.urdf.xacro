@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot name="cup_picker" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Common stuff -->
+  <xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro" />
+  
+  <!-- Global constants and world link -->
+  <xacro:include filename="$(find simulation)/description/urdf/common.urdf.xacro" />
+
+  <!-- UR 10 -->
+  <xacro:include filename="$(find ur_description)/urdf/ur10.urdf.xacro" />
+  
+  <!-- Macro for cuboids -->
+  <xacro:include filename="$(find simulation)/description/urdf/objects/cuboid.urdf.xacro"/>
+  
+  <!-- Kinect sensor -->
+  <xacro:include filename="$(find turtlebot_description)/urdf/sensors/kinect.urdf.xacro"/>
+
+  <!-- Create a cuboid lab table and connect it to the world. -->
+  <xacro:obj_cuboid name="lab_table" mass="50.0" width="2.0" height="1.0" depth="1.0">
+    <origin><!-- Default --></origin>
+  </xacro:obj_cuboid>
+  <joint name="${WORLD}_to_lab_table_joint" type="fixed">
+    <parent link="${WORLD}" />
+    <child link = "lab_table_link" />
+    <origin xyz="0.0 0.0 0.5" rpy="0 0 0" />
+  </joint>
+  
+  <!-- Create UR10 and connect it to the lab table. -->
+  <xacro:ur10_robot prefix="${CUP_PICKER}" joint_limited="true"/>
+  <joint name="lab_table_to_base_link_joint" type="fixed">
+    <parent link="lab_table_link" />
+    <child link = "base_link" />
+    <origin xyz="0.3 0.7 0.5" rpy="0 0 0" />
+  </joint>
+  
+  <!-- Create a Kinect. -->
+  <link name="tripod"/>
+  <joint name="${WORLD}_to_kinect_joint" type="fixed">
+    <parent link="${WORLD}" />
+    <child link = "tripod" />
+    <origin xyz="1.2 0.2 1.4" rpy="0 0.65 -3.1" />
+  </joint>
+  <sensor_kinect parent="tripod"/>
+  
+  <!-- Enable collision checking for the base link. -->
+  <gazebo reference="${CUP_PICKER}base_link">
+    <selfCollide>true</selfCollide>
+  </gazebo>
+</robot>

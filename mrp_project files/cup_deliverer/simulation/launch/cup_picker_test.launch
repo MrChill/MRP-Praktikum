@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="sim" default="false"/>
+  <arg name="robot_ip" default="ids-ur5"/>
+  <arg name="limited" default="false"/>
+  <arg name="min_payload"  default="0.0"/>
+  <arg name="max_payload"  default="5.0"/>
+  <arg name="prefix" default="ur5_glass_" />
+  <arg name="robot_name" default="glass_bot"/>
+  <!-- The max_velocity parameter is only used for debugging in the ur_driver. It's not related to actual velocity limits -->
+  <arg name="max_velocity" default="10.0"/> <!-- [rad/s] -->
+  <arg name="servoj_time" default="0.008" />
+  <arg name="base_frame" default="$(arg prefix)base" />
+  <arg name="tool_frame" default="$(arg prefix)tool0_controller" />
+
+  <!-- Load individual description -->
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find barbot_launch)/description/urdf/$(arg robot_name).xacro --inorder"/>
+
+  <!-- start the robot hardware / simulation -->
+  <group unless="$(arg sim)">
+    <node name="ur_driver" pkg="ur_modern_driver" type="ur_driver" output="screen">
+    <!-- copy the specified IP address to be consistant with ROS-Industrial spec. -->
+      <param name="prefix" type="str" value="$(arg prefix)" />
+      <param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
+      <param name="min_payload" type="double" value="$(arg min_payload)" />
+      <param name="max_payload" type="double" value="$(arg max_payload)" />
+      <param name="max_velocity" type="double" value="$(arg max_velocity)" />
+      <param name="servoj_time" type="double" value="$(arg servoj_time)" />
+          <param name="base_frame" type="str" value="$(arg base_frame)"/>
+      <param name="tool_frame" type="str" value="$(arg tool_frame)"/>
+      <remap from="follow_joint_trajectory" to="position_trajectory_controller/follow_joint_trajectory"/>
+    </node>
+  </group>
+
+  <group if="$(arg sim)">
+    <param name="generic_hw_control_loop/loop_hz" value="300" />
+    <param name="generic_hw_control_loop/cycle_time_error_threshold" value="0.01" />
+    <node name="sim_hardware_interface" pkg="ros_control_boilerplate" type="sim_hw_main"
+      output="screen" >
+    </node>
+  </group>
+
+  <!-- Load controller settings -->
+  <rosparam file="$(find barbot_launch)/config/ros_controller_configs/$(arg robot_name)_controllers.yaml" command="load"/>
+  <!-- spawn controller manager (with a timeout of 55 to give enough time to finger reset)-->
+  <node name="arm_ros_control_controller_spawner" pkg="controller_manager"
+        type="spawner" respawn="false" output="screen"
+        args="joint_state_controller position_trajectory_controller --shutdown-timeout 60" />
+  <node name="uninitialized_controller_loader" pkg="controller_manager" type="controller_manager"
+        respawn="false" output="screen" args="load position_controller" />
+
+
+  <!--   Convert joint states to /tf tranforms -->
+  <node name="ur5_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="use_tf_static" value="false"/>
+  </node>
+
+  <!-- MOPI -->
+  <param name="robot_description_semantic" textfile="$(find barbot_launch)/description/urdf/$(arg robot_name).srdf" /> 
+  <include file="$(find motion_launch)/launch/motion_pipeline.launch">
+    <arg name="controller_namespace" value="position_trajectory_controller"/>
+    <arg name="controller_namespace_command" value="position_controller"/>
+    <arg name="trajectory_folder" value="$(find barbot_launch)/trajectories/$(arg robot_name)"/>
+    <arg name="trac_ik_chain_start" value="$(arg prefix)base_link"/>
+    <arg name="trac_ik_chain_end" value="$(arg prefix)tool0"/>
+    <arg name="use_live_trac_ik" value="true"/>
+    <arg name="robot_loop_rate" value="125"/>
+    <arg name="urdf_param" value="robot_description"/>
+  </include>
+
+  <!-- Schunk gripper -->
+  <group>
+    <remap from="joint_states" to="gripper_joint_state" />
+    <node name="gripper_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+      <param name="joint_states" value="gripper_joint_state" />
+    </node>
+    <include file="$(find schunk_canopen_driver)/launch/gripper.launch">
+      <arg name="simulation" value="$(arg sim)" />
+      <arg name="node_mapping_file" value="$(find barbot_launch)/config/ros_controller_configs/$(arg robot_name)_node_mapping.yaml"/>
+    </include>
+    </group>
+</launch>
+
+

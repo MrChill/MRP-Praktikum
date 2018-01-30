@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- Global constants and world link -->
+  <xacro:include filename="$(find simulation)/description/urdf/common.urdf.xacro" />
+  
+  <!-- Mass of the cup. -->
+  <xacro:property name="MASS" value="0.2"/>
+  
+  <!-- Radius of the cup. -->
+  <xacro:property name="RADIUS" value="0.04"/>
+  
+  <!-- Height of the cup. -->
+  <xacro:property name="HEIGHT" value="0.1"/>
+  
+  <!-- Macro for cylinders. -->
+  <xacro:include filename="$(find simulation)/description/urdf/objects/cylinder.urdf.xacro"/>
+  
+  <xacro:obj_cylinder name="cup" mass="${MASS}" radius="${RADIUS}" length="${HEIGHT}">
+    <!-- We want to reference the cup from its bottom center. -->
+    <origin xyz="0 0 ${HEIGHT / 2.0}" rpy="0 0 0"/>
+  </xacro:obj_cylinder>
+  <joint name="${WORLD}_to_cup_joint" type="floating">
+    <parent link="${WORLD}" />
+    <child link="cup_link" />
+    <origin xyz="0 0 0.5" rpy="0 0 0"/>
+  </joint>
+</robot>

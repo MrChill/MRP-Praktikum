@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="world" >
+  
+  <xacro:property name="parent" value="world" />
+  <xacro:property name="pi" value="3.1415926535897931" />
+  <xacro:property name="robot_prefix" value="" />
+  
+  <!-- common stuff -->
+  <xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro" />
+
+  <!-- ur10 -->
+  <xacro:include filename="$(find ur_description)/urdf/ur10.urdf.xacro" />
+  
+  <!-- table -->
+  <xacro:include filename="$(find start_launch_pkg)/urdf/lab_table.urdf.xacro"/>
+ 
+  <!-- world link -->
+  <link name="${parent}" />
+  
+  <!-- arm -->
+  <xacro:ur10_robot prefix="${robot_prefix}" joint_limited="true"/>
+  
+  <!-- gen. labtable -->
+  <xacro:lab_table parent="${parent}">
+    <origin xyz="0 0.0 0.5" rpy="0 0 0" />
+  </xacro:lab_table>
+  
+  <joint name="${robot_prefix}base_link_to_lab_table" type="fixed">
+    <parent link="lab_table_link" />
+    <child link= "${robot_prefix}base_link" />
+    <origin xyz="0.2 0.2 0.0" rpy="0.0 0.0 ${pi/2.0}" />
+  </joint>
+
+  <!-- enables self collision with the table -->
+  <gazebo reference="${robot_prefix}base_link">
+    <selfCollide>true</selfCollide>
+    <static>true</static>
+  </gazebo>
+</robot>

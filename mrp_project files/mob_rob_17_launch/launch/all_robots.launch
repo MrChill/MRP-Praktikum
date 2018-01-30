@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+  <!--
+  Launches all three robots:
+    1. The cup acceptor.
+    2. The mobile platform (turtlebot).
+    3. The cup deliverer.
+  
+  If sim:=true is passed, the robots are launched in the Gazebo simulation
+  instead of the real world.
+  -->
+  
+  <arg name="sim" default="false"/>
+  
+  <!-- Start Gazebo if necessary. -->
+  <include if="$(arg sim)" file="$(find mob_rob_17_launch)/launch/gazebo.launch"/>
+
+  <!-- Launch the individual robots.  -->
+  <!-- TODO: launch the acceptor and the navigator.
+  <include file="$(find cup_acceptor)/launch/cup_acceptor.launch">
+    <arg name="sim" value="$(arg sim)"/>
+  </include>
+  <include file="$(find cup_navigator)/launch/cup_navigator.launch">
+    <arg name="sim" value="$(arg sim)"/>
+  </include>-->
+  <include file="$(find cup_deliverer)/launch/cup_deliverer.launch">
+    <arg name="sim" value="$(arg sim)"/>
+  </include>
+</launch>
+ 
