@@ -1,0 +1,2 @@
+mrp
+-DCATKIN_DEVEL_PREFIX=/home/seba/MRP/MRP-Praktikum/State-Machine/cupNavigator_ws/devel -DCMAKE_INSTALL_PREFIX=/home/seba/MRP/MRP-Praktikum/State-Machine/cupNavigator_ws/install -G Unix Makefiles

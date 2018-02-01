@@ -1,0 +1,16 @@
+<launch>
+  <group ns="cupNavigator">
+  <arg name="sim_map" default="$(find mrp)/data/map_final_gmapping.yaml" />
+  <param name="/save_dir" value="$(find mrp)/data/" />
+
+  <!--<include file="$(find turtlebot_bringup)/launch/minimal.launch">
+  </include>
+<include file="$(find rplidar_ros)/launch/rplidar.launch">
+  </include>-->
+  <include file="$(find turtlebot_navigation)/launch/amcl_demo.launch">
+     <arg name="map_file" value="$(arg sim_map)"/>
+  </include>
+  </group>
+  
+  
+</launch>

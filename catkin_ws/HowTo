@@ -1,0 +1,35 @@
+catkin_make in workspace/catkin_ws auf dem Turtlebot
+source setup.sh in workspace/catkin_ws/devel
+
+1. auf dem Turtlebot die Posen abspeichern
+	- roslaunch turtlebot_mrp simple_get_pose.launch
+
+	- rosrun get_pose.py
+
+	- Pose 1: 1 - Enter 1 - Enter
+
+	- Pose 2: 2 - Enter 2 - Enter
+
+	--> Dateien Pose1 und pose2 liegen nun in turtlebot_mrp/data
+	--> eine Pose1 unterhalb der Rampe und eine Pose2 oberhalb der Rampe
+
+2. Ausführen der Navigationsaktion
+	- roslaunch turtlebot_mrp navigate_deliver.launch
+
+	- rosrun deliver_server.py
+
+	--> Bis jetzt ist als globale Variable "aim" als True oder False (Fahre zu Roboter 1 oder Roboter 2) gesetzt, 		soll aber später vom Aktionserver übergeben werden
+
+
+Mögliche Probleme:
+	- deliver_server.py kann nicht auf dem Turtlebot gestartet werden (State Machine), Probleme mit der 	Ordnerstruktur 
+	--> Lösung:
+		Auf Turtlebot
+			roslaunch Turtlebot_bringup minimal.launch
+			roslaunch rplidar_ros rplidar.launch
+		
+		Auf Roscore
+			roslaunch turtlebot_mrp navigate_deliver.launch
+			rosrun deliver_server.py
+		--> dafür muss Ordnerstruktur und turtlebot_navigation_stack auf dem State Machine-Computer installiert sein
+

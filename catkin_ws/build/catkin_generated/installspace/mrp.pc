@@ -1,8 +1,0 @@
-prefix=/home/seba/MRP/MRP-Praktikum/catkin_ws/install
-
-Name: mrp
-Description: Description of mrp
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/seba/MRP/MRP-Praktikum/catkin_ws/install/lib 
-Requires: 

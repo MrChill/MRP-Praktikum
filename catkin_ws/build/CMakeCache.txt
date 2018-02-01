@@ -26,9 +26,6 @@ CATKIN_DEVEL_PREFIX:PATH=/home/seba/MRP/MRP-Praktikum/catkin_ws/devel
 //Catkin enable testing
 CATKIN_ENABLE_TESTING:BOOL=ON
 
-//Prefix to apply to package generated via gendebian
-CATKIN_PACKAGE_PREFIX:STRING=
-
 //Catkin skip testing
 CATKIN_SKIP_TESTING:BOOL=OFF
 

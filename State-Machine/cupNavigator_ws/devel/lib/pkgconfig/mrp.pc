@@ -1,0 +1,8 @@
+prefix=/home/seba/MRP/MRP-Praktikum/State-Machine/cupNavigator_ws/devel
+
+Name: mrp
+Description: Description of mrp
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/seba/MRP/MRP-Praktikum/State-Machine/cupNavigator_ws/devel/lib 
+Requires: 
